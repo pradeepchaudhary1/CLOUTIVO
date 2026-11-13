@@ -8,13 +8,14 @@ import { Calendar, Trophy } from "lucide-react";
 
 interface DailyEntry {
   day: string;
-  day_rank: number;
+  day_rank?: number;
+  rank?: number;
   slug: string;
   title: string;
   host: string;
   category: string;
   day_cents: number;
-  clicks: number;
+  clicks?: number;
 }
 
 export default function DailyPage() {
@@ -83,15 +84,19 @@ export default function DailyPage() {
                     )}
                   </div>
                   <div className="p-4 divide-y divide-neutral-900">
-                    {items.map((item) => (
+                    {items.map((item, idx) => (
                       <div key={`${day}-${item.slug}`} className="py-3 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-900 font-mono text-xs font-bold text-neutral-300">#{item.day_rank}</span>
+                          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-900 font-mono text-xs font-bold text-neutral-300">
+                            #{item.day_rank ?? item.rank ?? idx + 1}
+                          </span>
                           <div>
                             <Link href={`/product/${encodeURIComponent(item.slug)}`} className="font-semibold text-sm text-neutral-100 hover:underline">
                               {item.title}
                             </Link>
-                            <div className="text-xs text-neutral-500">{item.host} · {item.category} · {item.clicks} clicks</div>
+                            <div className="text-xs text-neutral-500">
+                              {item.host} · {item.category}{typeof item.clicks === "number" ? ` · ${item.clicks} clicks` : ""}
+                            </div>
                           </div>
                         </div>
                         <div className="font-mono font-bold text-emerald-400 text-sm">
