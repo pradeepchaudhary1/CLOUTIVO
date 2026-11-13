@@ -8,13 +8,14 @@ import DealCard from "@/components/deals/DealCard";
 import LiveActivitySidebar from "@/components/deals/LiveActivitySidebar";
 import ClaimModal from "@/components/deals/ClaimModal";
 import Footer from "@/components/layout/Footer";
-import { INITIAL_DEALS, CATEGORIES, DealItem } from "@/lib/mock-data";
+import { CATEGORIES, DealItem } from "@/lib/mock-data";
 
 export default function Home() {
   const [currency, setCurrency] = useState<"USD" | "INR">("USD");
   const [activeBoard, setActiveBoard] = useState<"all-time" | "rising" | "deals" | "today">("all-time");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [deals, setDeals] = useState<DealItem[]>(INITIAL_DEALS);
+  const [deals, setDeals] = useState<DealItem[]>([]);
+  const [loadingBoard, setLoadingBoard] = useState(true);
   const [isLiveDb, setIsLiveDb] = useState(true);
   const [liveStats, setLiveStats] = useState({ listings: 0, totalUsd: 0, clicks: 0 });
   const [topBidUsd, setTopBidUsd] = useState(10);
@@ -24,6 +25,7 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
+    setLoadingBoard(true);
     const boardParam = activeBoard === "today" ? "today" : activeBoard === "deals" ? "deals" : "all-time";
     fetch(`/api/board?board=${boardParam}`)
       .then((r) => r.json())
@@ -38,7 +40,7 @@ export default function Home() {
             clicks: data.stats.clicks ?? 0,
           });
         }
-        if (Array.isArray(data.listings) && data.listings.length > 0) {
+        if (Array.isArray(data.listings)) {
           setDeals(
             data.listings.map((item: Record<string, unknown>, idx: number) => {
               const totalUsd = Math.round(Number(item.total_cents ?? 0) / 100);
@@ -62,7 +64,10 @@ export default function Home() {
           );
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setLoadingBoard(false);
+      });
     return () => { cancelled = true; };
   }, [activeBoard]);
 
@@ -92,7 +97,7 @@ export default function Home() {
 
         {!isLiveDb && (
           <div className="mt-4 mx-auto max-w-2xl rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-xs text-amber-300">
-            DEMO PREVIEW · Showing sample listings until Supabase keys are connected in .env.local.
+            Database connecting... check Supabase environment variables.
           </div>
         )}
 
@@ -135,9 +140,19 @@ export default function Home() {
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
           <section className="lg:col-span-8 space-y-3">
-            {filteredDeals.map((deal) => (
-              <DealCard key={deal.id} deal={deal} currency={currency} onClaim={handleClaim} />
-            ))}
+            {loadingBoard ? (
+              [1, 2, 3].map((n) => (
+                <div key={n} className="h-28 rounded-xl border border-neutral-800/80 bg-[#0a0a0a] animate-pulse" />
+              ))
+            ) : filteredDeals.length === 0 ? (
+              <div className="rounded-xl border border-neutral-800 bg-[#0a0a0a] p-8 text-center text-xs text-neutral-400">
+                No listings in this view yet. Click &ldquo;Claim #1&rdquo; to list first!
+              </div>
+            ) : (
+              filteredDeals.map((deal) => (
+                <DealCard key={deal.id} deal={deal} currency={currency} onClaim={handleClaim} />
+              ))
+            )}
           </section>
           <aside className="lg:col-span-4 lg:sticky lg:top-20 h-fit space-y-4">
             <LiveActivitySidebar />
@@ -146,19 +161,19 @@ export default function Home() {
 
         <section className="mt-16 border-t border-neutral-900 pt-10 pb-8 text-center">
           <p className="text-xs uppercase tracking-widest text-neutral-500 font-bold">
-            {isLiveDb ? "Verified Live Platform Stats" : "Sample Preview Stats"}
+            Verified Live Platform Stats
           </p>
           <div className="mt-6 grid grid-cols-3 gap-4 max-w-xl mx-auto">
             <div className="rounded-xl border border-neutral-900 bg-neutral-950/60 p-4">
-              <div className="font-mono text-2xl font-black text-white">{isLiveDb ? liveStats.clicks.toLocaleString() : 0}</div>
+              <div className="font-mono text-2xl font-black text-white">{liveStats.clicks.toLocaleString()}</div>
               <div className="text-[11px] text-neutral-500 mt-1">Outbound Clicks</div>
             </div>
             <div className="rounded-xl border border-neutral-900 bg-neutral-950/60 p-4">
-              <div className="font-mono text-2xl font-black text-emerald-400">${isLiveDb ? liveStats.totalUsd.toLocaleString() : 0}</div>
+              <div className="font-mono text-2xl font-black text-emerald-400">${liveStats.totalUsd.toLocaleString()}</div>
               <div className="text-[11px] text-neutral-500 mt-1">Total Paid Volume</div>
             </div>
             <div className="rounded-xl border border-neutral-900 bg-neutral-950/60 p-4">
-              <div className="font-mono text-2xl font-black text-white">{isLiveDb ? liveStats.listings : 0}</div>
+              <div className="font-mono text-2xl font-black text-white">{liveStats.listings}</div>
               <div className="text-[11px] text-neutral-500 mt-1">Listed Products</div>
             </div>
           </div>
