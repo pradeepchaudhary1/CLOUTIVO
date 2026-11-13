@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getActivity, getDeals, getSamples, getStats, getToday, getTop, PAGE_SIZE, SAMPLE_THRESHOLD } from "@/lib/db";
+import { getActivity, getCategoryStats, getDailyArchive, getDeals, getSamples, getStats, getToday, getTop, PAGE_SIZE, SAMPLE_THRESHOLD } from "@/lib/db";
 import { priceForFirst } from "@/lib/pricing";
 import { hasDb } from "@/lib/supabase";
 
@@ -12,23 +12,20 @@ export async function GET(req: Request) {
 
   if (!hasDb) {
     return NextResponse.json({
-      ok: true,
-      dbConnected: false,
-      listings: [],
-      samples: [],
-      activity: [],
-      stats: { listings: 0, total_cents: 0, clicks: 0 },
-      firstPriceCents: 1000,
+      ok: true, dbConnected: false, listings: [], samples: [], activity: [],
+      daily: [], categories: [], stats: { listings: 0, total_cents: 0, clicks: 0 }, firstPriceCents: 1000,
     });
   }
 
   try {
-    const [allTop, todayTop, dealsTop, stats, activity] = await Promise.all([
+    const [allTop, todayTop, dealsTop, stats, activity, daily, categories] = await Promise.all([
       getTop({ limit: PAGE_SIZE, category: category && category !== "All" ? category : undefined }),
       board === "today" ? getToday(PAGE_SIZE) : Promise.resolve([]),
       board === "deals" ? getDeals(PAGE_SIZE) : Promise.resolve([]),
       getStats(),
       getActivity(8),
+      board === "daily" ? getDailyArchive(30) : Promise.resolve([]),
+      board === "categories" ? getCategoryStats() : Promise.resolve([]),
     ]);
 
     const samples = stats.listings < SAMPLE_THRESHOLD ? await getSamples() : [];
@@ -36,12 +33,7 @@ export async function GET(req: Request) {
     const topCents = allTop[0]?.total_cents ?? null;
 
     return NextResponse.json({
-      ok: true,
-      dbConnected: true,
-      listings: activeList,
-      samples,
-      activity,
-      stats,
+      ok: true, dbConnected: true, listings: activeList, samples, activity, daily, categories, stats,
       firstPriceCents: priceForFirst(topCents),
     });
   } catch (e) {
