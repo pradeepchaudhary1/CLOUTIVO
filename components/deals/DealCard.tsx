@@ -52,7 +52,7 @@ export default function DealCard({ deal, currency, onClaim }: DealCardProps) {
               <a
                 href={deal.url}
                 target="_blank"
-                rel="noreferrer"
+                rel="sponsored noopener noreferrer"
                 className="font-semibold text-neutral-100 hover:text-white transition flex items-center gap-1.5 truncate"
               >
                 <span>{deal.title}</span>
@@ -60,7 +60,7 @@ export default function DealCard({ deal, currency, onClaim }: DealCardProps) {
               </a>
               <span className="inline-flex items-center gap-1 rounded bg-neutral-900 border border-neutral-800 px-1.5 py-0.5 text-[10px] font-mono text-neutral-400">
                 <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                DoFollow
+                Verified
               </span>
             </div>
 
