@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       board === "deals" ? getDeals(PAGE_SIZE) : Promise.resolve([]),
       getStats(),
       getActivity(8),
-      board === "daily" ? getDailyArchive(30) : Promise.resolve([]),
+      board === "daily" ? getDailyArchive() : Promise.resolve([]),
       board === "categories" ? getCategoryStats() : Promise.resolve([]),
     ]);
 
