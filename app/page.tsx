@@ -18,7 +18,7 @@ export default function Home() {
   const [isLiveDb, setIsLiveDb] = useState(true);
   const [liveStats, setLiveStats] = useState({ listings: 0, totalUsd: 0, clicks: 0 });
   const [topBidUsd, setTopBidUsd] = useState(10);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetDeal, setTargetDeal] = useState<DealItem | null>(null);
   const [prefilledData, setPrefilledData] = useState<{ url?: string; category?: string; amount?: number }>({});
 
