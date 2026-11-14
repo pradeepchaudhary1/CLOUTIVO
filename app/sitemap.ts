@@ -1,32 +1,36 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/config";
+import { CATEGORIES } from "@/lib/categories";
+import { getTop } from "@/lib/db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://cloutivo.com";
+export const revalidate = 600;
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "hourly",
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/daily`,
-      lastModified: new Date(),
-      changeFrequency: "hourly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/categories`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-  ];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const base = SITE.url;
+  const now = new Date();
+
+  const staticPaths = ["", "/today", "/daily", "/deals", "/categories", "/about", "/stats", "/rules", "/faq", "/terms", "/privacy", "/backlinks"];
+  const staticEntries: MetadataRoute.Sitemap = staticPaths.map((p) => ({
+    url: `${base}${p || "/"}`,
+    lastModified: now,
+    changeFrequency: p === "" || p === "/today" || p === "/deals" ? "hourly" : "weekly",
+    priority: p === "" ? 1.0 : 0.8,
+  }));
+
+  const categoryEntries: MetadataRoute.Sitemap = CATEGORIES.map((c) => ({
+    url: `${base}/category/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.7,
+  }));
+
+  const listings = await getTop({ limit: 500 }).catch(() => []);
+  const productEntries: MetadataRoute.Sitemap = listings.map((l) => ({
+    url: `${base}/product/${encodeURIComponent(l.slug)}`,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...categoryEntries, ...productEntries];
 }
