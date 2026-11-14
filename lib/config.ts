@@ -2,9 +2,9 @@ const clean = (v: string | undefined, fallback: string) => (v && v.trim() ? v.tr
 
 export const SITE = {
   name: clean(process.env.NEXT_PUBLIC_SITE_NAME, "Cloutivo"),
-  url: clean(process.env.NEXT_PUBLIC_APP_URL, "https://cloutivo.com").replace(/\/+$/, ""),
+  url: clean(process.env.NEXT_PUBLIC_APP_URL, "https://cloutivo.in").replace(/\/+$/, ""),
   twitter: clean(process.env.NEXT_PUBLIC_TWITTER, "cloutivo").replace(/^@/, ""),
-  email: clean(process.env.CONTACT_EMAIL, "hello@example.com"),
+  email: clean(process.env.CONTACT_EMAIL, "thenexusaiagency@gmail.in"),
   tagline: "Pay to stand above everyone else. Rank is what you pay.",
   description:
     "Cloutivo is a public pay-to-rank leaderboard and deals board for startups, SaaS, apps and services. Rank is the total dollars paid, clicks are counted in public, UPI and cards are supported, and every category has its own #1.",
