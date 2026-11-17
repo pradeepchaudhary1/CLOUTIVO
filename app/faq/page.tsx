@@ -22,8 +22,8 @@ export default function FAQPage() {
       a: "Yes! If another founder outranks you, simply submit the exact same website URL or @handle. You only pay the difference amount between your current total and the new target rank.",
     },
     {
-      q: "Do I get a real DoFollow SEO backlink?",
-      a: "Yes. Unlike social networks or ad platforms that mask links behind redirects, CLOUTIVO gives your website a direct, permanent, high-authority DoFollow backlink indexed by search engines and generative AI agents.",
+      q: "How do links and product pages work on CLOUTIVO?",
+      a: "Every listing receives a dedicated, indexable product page on cloutivo.in/product/[slug] with your brand details, promo code, and tracked outbound clicks.",
     },
     {
       q: "What payment methods are supported?",
@@ -55,7 +55,7 @@ export default function FAQPage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white">Frequently Asked Questions</h1>
           <p className="mt-2 text-sm text-neutral-400">
-            Everything you need to know about CLOUTIVO rankings, DoFollow backlinks, and bidding rules.
+            Everything you need to know about CLOUTIVO rankings, product pages, and bidding rules.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function FAQPage() {
                     <ChevronDown className="w-4 h-4 text-neutral-500 shrink-0" />
                   )}
                 </button>
-                {isOpen && (
+                {true && (
                   <div className="px-5 pb-5 text-xs sm:text-sm text-neutral-400 leading-relaxed border-t border-neutral-900 pt-3">
                     {faq.a}
                   </div>

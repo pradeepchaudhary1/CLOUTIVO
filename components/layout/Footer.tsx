@@ -49,6 +49,20 @@ export default function Footer() {
               The public pay-to-rank leaderboard. Paid listings are marked sponsored.
             </p>
           </div>
+
+          <a
+            href="https://submitaitools.org/cloutivo-in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block opacity-90 hover:opacity-100 transition"
+          >
+            <img
+              src="https://submitaitools.org/static_submitaitools/images/submitaitools.png"
+              alt="cloutivo.in"
+              style={{ borderRadius: "10px", width: "200px", height: "60px" }}
+            />
+          </a>
+
           <div className="text-[11px] text-neutral-400">
             © 2026 CLOUTIVO · Built by{" "}
             <a href="https://nexusaiagency.in" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline font-semibold">

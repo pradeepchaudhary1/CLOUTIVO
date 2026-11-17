@@ -1,0 +1,15 @@
+File,Line,Domain,Protocol,Context,Purpose,Category,Risk,Recommendation
+app/layout.tsx,28,https://cloutivo.com,HTTPS,"metadataBase: new URL(""https://cloutivo.com""),",Base URL for resolving relative OpenGraph and canonical URLs,SEO,Critical,Change to dynamic new URL(process.env.NEXT_PUBLIC_APP_URL || "https://cloutivo.in")
+app/layout.tsx,30,https://cloutivo.com,HTTPS,"canonical: ""https://cloutivo.com"",",Instructs search engines which domain to index as canonical,SEO,Critical,Change to https://cloutivo.in
+app/layout.tsx,35,https://cloutivo.com,HTTPS,"url: ""https://cloutivo.com"",",OpenGraph sharing URL for social platforms,SEO,High,Change to https://cloutivo.in
+app/layout.tsx,78,https://cloutivo.com,HTTPS,"url: ""https://cloutivo.com"",",JSON-LD WebSite schema URL for Google and AI engines,SEO,High,Change to https://cloutivo.in
+app/layout.tsx,82,https://cloutivo.com,HTTPS,"target: ""https://cloutivo.com/?q={search_term_string}"",",JSON-LD SearchAction deep link URL,SEO,Medium,Change to https://cloutivo.in/?q={search_term_string}
+app/robots.ts,9,https://cloutivo.com,HTTPS,"sitemap: ""https://cloutivo.com/sitemap.xml"",",Directs robots and web crawlers to the sitemap index,SEO,Critical,Update to `${SITE.url}/sitemap.xml` or https://cloutivo.in/sitemap.xml
+app/sitemap.ts,4,https://cloutivo.com,HTTPS,"const baseUrl = ""https://cloutivo.com"";",Base URL for all generated sitemap entries,SEO,Critical,Import SITE from @/lib/config and use SITE.url
+lib/config.ts,5,https://cloutivo.com,HTTPS,"url: clean(process.env.NEXT_PUBLIC_APP_URL, ""https://cloutivo.com"").replace(/\/+$/, """"),",Fallback default URL if NEXT_PUBLIC_APP_URL is missing,Config,Critical,Update fallback to "https://cloutivo.in"
+README.md,13,https://cloutivo.com,HTTPS,"3. Razorpay webhook: https://cloutivo.com/api/webhooks/razorpay, event order.paid",Documentation for Razorpay webhook endpoint setup,Documentation,Low,Update documentation to https://cloutivo.in/api/webhooks/razorpay
+README.md,14,https://cloutivo.com,HTTPS,"4. Stripe (optional): webhook https://cloutivo.com/api/webhooks/stripe",Documentation for Stripe webhook endpoint setup,Documentation,Low,Update documentation to https://cloutivo.in/api/webhooks/stripe
+docs/FILE_MAP.md,28,https://cloutivo.com,HTTPS,"Fixed canonical (was https://cloutivo.com on EVERY page...",Historical architectural log of previous canonical bug,Documentation,Low,Retain as historical context or update
+.env.local,2,http://cloutivo.in,HTTP,"NEXT_PUBLIC_APP_URL=http://cloutivo.in",Primary app base URL environment variable,Config,Critical,Change protocol to secure HTTPS: NEXT_PUBLIC_APP_URL=https://cloutivo.in
+.env.local,15,https://cloutivo.in,HTTPS,"RAZORPAY_WEBHOOK_URL=https://cloutivo.in/api/webhooks/razorpay",Webhook callback URL variable for Razorpay,Backend,High,Verify matches active webhook endpoint in Razorpay dashboard
+app/backlinks/page.tsx,109,rzp.io/rzp/cloutivo.com,HTTPS,"href=""https://rzp.io/rzp/cloutivo.com""",External Razorpay hosted payment page slug (not website domain),Payment,High,Verify active status in Razorpay or update if slug is modified

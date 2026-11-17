@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Activity, Globe, TrendingUp } from "lucide-react";
+import { Activity, Globe, TrendingUp, Trophy, Layers } from "lucide-react";
 
 interface AnalyticsData {
   online: number;
@@ -12,6 +13,13 @@ interface AnalyticsData {
   channels: Array<{ channel: string; count: number; pct: number }>;
   countries: Array<{ country: string; count: number; pct: number }>;
   stats: { listings: number; total_cents: number; clicks: number };
+}
+
+interface BoardItem {
+  slug: string;
+  name: string;
+  category?: string;
+  total_cents?: number;
 }
 
 export default function StatsPage() {
@@ -24,12 +32,42 @@ export default function StatsPage() {
     countries: [],
     stats: { listings: 0, total_cents: 0, clicks: 0 },
   });
+  const [topBids, setTopBids] = useState<BoardItem[]>([]);
+  const [categorySpend, setCategorySpend] = useState<Array<{ category: string; count: number; usd: number; pct: number }>>([]);
 
   useEffect(() => {
     const load = () => {
       fetch("/api/analytics")
         .then((r) => r.json())
         .then((d) => { if (d?.ok) setData(d); })
+        .catch(() => {});
+
+      fetch("/api/board")
+        .then((r) => r.json())
+        .then((d) => {
+          const rows: BoardItem[] = Array.isArray(d) ? d : (d?.listings ?? d?.items ?? d?.top ?? []);
+          if (!Array.isArray(rows) || rows.length === 0) return;
+          setTopBids(rows.slice(0, 5));
+
+          const map = new Map<string, { count: number; cents: number }>();
+          let totalCents = 0;
+          for (const item of rows) {
+            const cat = item.category || "Other";
+            const cents = Number(item.total_cents ?? 0);
+            totalCents += cents;
+            const prev = map.get(cat) || { count: 0, cents: 0 };
+            map.set(cat, { count: prev.count + 1, cents: prev.cents + cents });
+          }
+          const summary = Array.from(map.entries())
+            .map(([category, v]) => ({
+              category,
+              count: v.count,
+              usd: Math.round(v.cents / 100),
+              pct: totalCents > 0 ? Math.round((v.cents / totalCents) * 100) : 0,
+            }))
+            .sort((a, b) => b.usd - a.usd);
+          setCategorySpend(summary);
+        })
         .catch(() => {});
     };
     load();
@@ -49,7 +87,7 @@ export default function StatsPage() {
           </div>
           <h1 className="mt-2 text-3xl sm:text-4xl font-black text-white">Live Platform Analytics</h1>
           <p className="mt-2 text-sm text-neutral-400">
-            Real-time visitors, paid volume, and outbound clicks queried directly from Supabase. Updates every 15 seconds.
+            Real-time visitors, paid volume, top bids, and category spend queried directly from Supabase.
           </p>
         </div>
 
@@ -84,10 +122,57 @@ export default function StatsPage() {
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-neutral-800/80 bg-[#0a0a0a] p-6">
-            <h3 className="font-bold text-base text-white flex items-center gap-2 mb-4">
+            <h2 className="font-bold text-base text-white flex items-center gap-2 mb-4">
+              <Trophy className="w-4 h-4 text-emerald-400" />
+              <span>Top Ranked Bids</span>
+            </h2>
+            <div className="space-y-3">
+              {topBids.length === 0 ? (
+                <p className="text-xs text-neutral-500">Loading leaderboard data...</p>
+              ) : (
+                topBids.map((item, idx) => (
+                  <div key={item.slug} className="flex items-center justify-between text-xs py-2 border-b border-neutral-900">
+                    <Link href={`/product/${item.slug}`} className="text-neutral-200 hover:text-emerald-400 font-medium truncate pr-3">
+                      #{idx + 1} {item.name}
+                    </Link>
+                    <span className="font-mono font-bold text-emerald-400 shrink-0">
+                      ${Math.round(Number(item.total_cents ?? 0) / 100).toLocaleString()}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-neutral-800/80 bg-[#0a0a0a] p-6">
+            <h2 className="font-bold text-base text-white flex items-center gap-2 mb-4">
+              <Layers className="w-4 h-4 text-emerald-400" />
+              <span>Category-Wise Spend Breakdown</span>
+            </h2>
+            <div className="space-y-3">
+              {categorySpend.length === 0 ? (
+                <p className="text-xs text-neutral-500">Loading category spend...</p>
+              ) : (
+                categorySpend.map((item) => (
+                  <div key={item.category} className="flex items-center justify-between text-xs py-2 border-b border-neutral-900">
+                    <span className="text-neutral-300 font-medium">{item.category} ({item.count})</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-neutral-300">${item.usd.toLocaleString()}</span>
+                      <span className="font-mono font-bold text-emerald-400 w-10 text-right">{item.pct}%</span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-neutral-800/80 bg-[#0a0a0a] p-6">
+            <h2 className="font-bold text-base text-white flex items-center gap-2 mb-4">
               <TrendingUp className="w-4 h-4 text-emerald-400" />
               <span>Traffic Acquisition Channels (24h)</span>
-            </h3>
+            </h2>
             <div className="space-y-3">
               {data.channels.length === 0 ? (
                 <p className="text-xs text-neutral-500">Waiting for visitor data...</p>
@@ -106,10 +191,10 @@ export default function StatsPage() {
           </div>
 
           <div className="rounded-2xl border border-neutral-800/80 bg-[#0a0a0a] p-6">
-            <h3 className="font-bold text-base text-white flex items-center gap-2 mb-4">
+            <h2 className="font-bold text-base text-white flex items-center gap-2 mb-4">
               <Globe className="w-4 h-4 text-emerald-400" />
               <span>Visitor Geography (24h)</span>
-            </h3>
+            </h2>
             <div className="space-y-3">
               {data.countries.length === 0 ? (
                 <p className="text-xs text-neutral-500">Waiting for visitor data...</p>

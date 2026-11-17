@@ -1,0 +1,17 @@
+File Path,Line Number,Old Reference,Category,Risk,Context,Recommendation,Replacement
+app/layout.tsx,28,https://cloutivo.com,SEO,Critical,metadataBase configuration for all relative OpenGraph/canonical URLs,Change hardcoded .com to use SITE.url or intended primary domain,new URL(process.env.NEXT_PUBLIC_APP_URL || "https://cloutivo.in")
+app/layout.tsx,30,https://cloutivo.com,SEO,Critical,alternates.canonical URL for root layout,Update canonical tag to intended primary domain,https://cloutivo.in
+app/layout.tsx,35,https://cloutivo.com,SEO,High,openGraph.url website property,Update OpenGraph website URL to intended primary domain,https://cloutivo.in
+app/layout.tsx,78,https://cloutivo.com,SEO,High,JSON-LD WebSite schema url property,Update WebSite schema URL to intended primary domain,https://cloutivo.in
+app/layout.tsx,82,https://cloutivo.com/?q={search_term_string},SEO,Medium,JSON-LD SearchAction potentialAction target,Update SearchAction target to intended primary domain,https://cloutivo.in/?q={search_term_string}
+app/robots.ts,9,https://cloutivo.com/sitemap.xml,SEO,Critical,sitemap directive in robots.txt generator,Dynamically reference SITE.url or set to intended primary domain,`${SITE.url}/sitemap.xml` or https://cloutivo.in/sitemap.xml
+app/sitemap.ts,4,https://cloutivo.com,SEO,Critical,baseUrl constant in sitemap.xml generator,Use SITE.url from config or update to intended primary domain,SITE.url or https://cloutivo.in
+lib/config.ts,5,https://cloutivo.com,Config,Critical,Fallback default URL if NEXT_PUBLIC_APP_URL is undefined,Update fallback URL from .com to intended primary domain,https://cloutivo.in
+.env.local,2,http://cloutivo.in,Config,Critical,NEXT_PUBLIC_APP_URL environment variable uses insecure HTTP protocol,Change protocol from http:// to secure https://,https://cloutivo.in
+.env.local,15,https://cloutivo.in/api/webhooks/razorpay,Backend,High,RAZORPAY_WEBHOOK_URL configuration,Verify matches Razorpay webhook dashboard endpoint,https://cloutivo.in/api/webhooks/razorpay
+.env.example,2,https://yourdomain.com,Config,Low,Placeholder domain example in .env template,Update example to represent intended domain structure,https://cloutivo.in
+app/backlinks/page.tsx,109,https://rzp.io/rzp/cloutivo.com,Payments,High,Direct Razorpay payment page button link,Ensure Razorpay page slug matches current active payment page,https://rzp.io/rzp/cloutivo.com (or updated slug if modified in Razorpay)
+README.md,13,https://cloutivo.com/api/webhooks/razorpay,Documentation,Low,Setup documentation for Razorpay webhook,Update docs to intended primary domain,https://cloutivo.in/api/webhooks/razorpay
+README.md,14,https://cloutivo.com/api/webhooks/stripe,Documentation,Low,Setup documentation for Stripe webhook,Update docs to intended primary domain,https://cloutivo.in/api/webhooks/stripe
+docs/FILE_MAP.md,28,https://cloutivo.com,Documentation,Low,Historical file map documentation note,Documentation only - no runtime impact,Keep as historical context or update
+next.config.ts,28,https://yourdomain.com/<INDEXNOW_KEY>.txt,Config,Low,Comment describing IndexNow ownership verification rewrite,Documentation comment only - no runtime impact,// IndexNow ownership file: https://cloutivo.in/<INDEXNOW_KEY>.txt

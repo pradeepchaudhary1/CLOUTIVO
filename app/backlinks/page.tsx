@@ -14,7 +14,7 @@ export default function BacklinksPage() {
       features: [
         "25 Vetted high-authority directories",
         "100% Manual submission with live proof",
-        "DR 30 to DR 75+ authority domains",
+        "25 curated startup & SaaS directories",
         "Completed within 7-10 days",
         "Full Excel report with live URLs",
       ],
@@ -28,7 +28,7 @@ export default function BacklinksPage() {
       features: [
         "50 Vetted high-authority directories",
         "100% Manual submission with live proof",
-        "DR 40 to DR 85+ authority domains",
+        "50 curated startup & SaaS directories",
         "Completed within 5-7 days",
         "Full Excel report with live URLs",
         "AI Search indexing optimization (ChatGPT & Perplexity)",
@@ -43,7 +43,7 @@ export default function BacklinksPage() {
       features: [
         "100 Premium SaaS & Startup directories",
         "Top tier platforms (SourceForge, BetaList, Uneed)",
-        "DR up to 92+ maximum authority",
+        "Direct profile links where supported by each directory",
         "Express 3-5 days delivery",
         "Dedicated verification report with screenshots",
         "Priority founder email support",
@@ -60,13 +60,13 @@ export default function BacklinksPage() {
         <div className="text-center max-w-2xl mx-auto border-b border-neutral-900 pb-10">
           <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>High Domain Authority Service</span>
+            <span>Manual Directory Submission Service</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
             Get Submitted to 100+ Top Directories. Hand-Done with Proof.
           </h1>
           <p className="mt-4 text-sm sm:text-base text-neutral-400 leading-relaxed">
-            Skip 60+ hours of tedious account creations and forms. We manually submit your startup to 100 vetted directories (up to DR 92+) to establish permanent Google authority.
+            Skip 60+ hours of tedious account creations and forms. We manually submit your startup to 100 vetted directories to build early brand visibility, referral traffic, and structured directory profiles.
           </p>
         </div>
 
@@ -106,7 +106,7 @@ export default function BacklinksPage() {
               </div>
 
               <a
-                href="https://rzp.io/rzp/cloutivo.com"
+                href="https://rzp.io/rzp/cloutivo.in"
                 target="_blank"
                 rel="noreferrer"
                 className={`mt-8 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition active:scale-95 ${
