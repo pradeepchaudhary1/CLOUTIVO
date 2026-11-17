@@ -27,7 +27,7 @@ export default async function Home() {
       category: item.category,
       discount: item.discount ?? "",
       couponCode: item.coupon_code ?? "",
-      clicks: Number(item.clicks ?? 0),
+      clicks: Number((item as { clicks?: number }).clicks ?? 0),
       timeAgo: "Verified",
     };
   });
