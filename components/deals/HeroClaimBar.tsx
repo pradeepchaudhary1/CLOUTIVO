@@ -41,7 +41,7 @@ export default function HeroClaimBar({ currency, topBidPrice, onInstantClaim }: 
     <div className="mx-auto max-w-3xl text-center pt-6 pb-4">
       <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4 shadow-sm">
         <Flame className="w-3.5 h-3.5 text-emerald-400" />
-        <span>Pay to stand above everyone else · Live Public Board</span>
+        <span>Startup Directory & AI Tools Deals · Live Public Board</span>
       </div>
 
       <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
@@ -51,7 +51,7 @@ export default function HeroClaimBar({ currency, topBidPrice, onInstantClaim }: 
         </span>
       </h1>
       <p className="mt-2.5 text-xs sm:text-sm text-neutral-400 max-w-lg mx-auto">
-        List your website, app, or service. Gain permanent DoFollow backlinks, high-intent founder traffic, and verified rank.
+        Discover ranked startups, AI tools, and verified SaaS deals. List your product with instant UPI & card checkout and live click tracking.
       </p>
 
       {/* Action Bar */}

@@ -17,7 +17,9 @@ interface AnalyticsData {
 
 interface BoardItem {
   slug: string;
-  name: string;
+  name?: string;
+  title?: string;
+  domain?: string;
   category?: string;
   total_cents?: number;
 }
@@ -133,7 +135,7 @@ export default function StatsPage() {
                 topBids.map((item, idx) => (
                   <div key={item.slug} className="flex items-center justify-between text-xs py-2 border-b border-neutral-900">
                     <Link href={`/product/${item.slug}`} className="text-neutral-200 hover:text-emerald-400 font-medium truncate pr-3">
-                      #{idx + 1} {item.name}
+                      #{idx + 1} {item.name || item.title || item.domain || item.slug}
                     </Link>
                     <span className="font-mono font-bold text-emerald-400 shrink-0">
                       ${Math.round(Number(item.total_cents ?? 0) / 100).toLocaleString()}

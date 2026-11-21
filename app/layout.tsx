@@ -13,7 +13,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "CLOUTIVO — Product Discovery & Pay-to-Rank Startup Leaderboard",
+    default: "CLOUTIVO — Startup Directory, AI Tools & SaaS Deals Leaderboard",
     template: "%s · CLOUTIVO",
   },
   description:

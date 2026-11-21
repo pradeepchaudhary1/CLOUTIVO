@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink, Copy, Check, MousePointerClick, ShieldCheck } from "lucide-react";
 import { DealItem } from "@/lib/mock-data";
 
@@ -88,6 +88,7 @@ export default function DealCard({ deal, currency, onClaim }: DealCardProps) {
 
               <span className="text-neutral-500 text-[11px]">· {deal.timeAgo}</span>
               <span className="text-neutral-400 font-mono text-[11px]">· {deal.displayUrl}</span>
+              <Link href={`/product/${encodeURIComponent(deal.id)}`} className="rounded-md bg-neutral-900 border border-neutral-800 px-2 py-0.5 text-[11px] text-emerald-400 hover:bg-neutral-800 hover:text-emerald-300 transition">View Details</Link>
               <span className="flex items-center gap-1 text-neutral-500 text-[11px]">
                 · <MousePointerClick className="w-3 h-3" /> {deal.clicks} clicks
               </span>
